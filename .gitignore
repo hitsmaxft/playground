@@ -1,0 +1,5 @@
+[glob]
+*.swp
+cscope.*
+tags
+.idea
