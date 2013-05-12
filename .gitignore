@@ -1,5 +1,11 @@
 [glob]
-*.swp
 cscope.*
 tags
 .idea
+#temp files
+*.swp
+*.pyc
+*.so
+*.a
+*.out
+*.log
