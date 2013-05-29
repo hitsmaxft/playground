@@ -1,0 +1,16 @@
+{
+    "family": "demo",
+    "version": "0.0.1",
+    "name": "seajs-demo",
+    "spm": {
+        "alias": {
+            "seajs": "2.0.0",
+            "jquery": "1.9.1",
+            "underscore": "1.4.4",
+            "backbone": "1.0.0"
+        },
+    },
+    "devDependencies": {
+        "grunt": "~0.4.1"
+    }
+}
