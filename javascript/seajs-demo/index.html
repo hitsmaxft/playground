@@ -9,7 +9,11 @@
     src="js/sea-modules/seajs/seajs/2.0.0/sea.js"
     data-config="./js/config"
     data-main="./js/main">
-    //if . or .. in data-*  , cheat on current root dir
+    // tip: if . or .. in data-*  , resolve to root dir
+    // for seajs , base path is /js/seajs/sea-modules/ (alias as ~seajs)
+    // data-config="js/config", will be resolved into ~seajs/js/config
+    // /js/config, is domain.com/js/config
+    // ../js/config, is domain.com/../js/config
 </script>   
 </body>
 </html>
