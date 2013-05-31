@@ -1,11 +1,10 @@
 # coding=utf-8
 
-import Wrapper.Wrapper as w
-import re
+import Expr.Wrapper as w
 
 class Query(object):
     """
-    针对节点查寻的一个工具类. 用于
+    针对节点查寻的一个工具类. 用于解析和定位节点类型/值等
     """
     t_node = r"([a-z]+.)?[a-z]+"
 
@@ -45,7 +44,7 @@ class Query(object):
                 if not cur or cur not in node_ind:
                     return w(None)
                 else:
-                    node_int
+                    pass
 
     def check_path(self, path):
         pass

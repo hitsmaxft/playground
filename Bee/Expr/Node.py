@@ -1,13 +1,24 @@
-# coding=utf-8
+#!/bin/bash/python
+# -*- coding: utf-8 -*-
+
 import Wrapper
-import Query.query as query
 
 class Node(Wrapper):
     _path=None
 
+
     def __init__(self, path):
+        Wrapper.__init__(path)
         self._path = path
-        self._v = query(path)
+        #self._v = query(path)
+
+    def parse(expr):
+        """
+
+
+        :return:
+        """
+        return expr
 
     def __len__(self):
         """
