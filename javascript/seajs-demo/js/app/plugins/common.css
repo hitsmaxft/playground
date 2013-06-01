@@ -1,6 +1,10 @@
 .splugins_load_error:after{
     color:red;
-    content: " (loading error)";
+    content: " (plugin missing)";
+}
+.splugins_load_on:after{
+    color:red;
+    content: " (On)";
 }
 .splugins_simple_title{
     color:red

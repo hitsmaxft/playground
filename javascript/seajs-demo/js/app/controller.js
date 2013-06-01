@@ -7,24 +7,26 @@ define(function(require,exports, module){
 
     require("./plugins/common.css")
 
+    //factory for plugin dynamical loading
+    //makes callback for lazy loading
     var load_plugins = function (name) {
-        return function (e) {
-            seajs.use( "/js/app/plugins/" + name
-                , function (m) {
-                    var _v = document.getElementById("pluginModule"+name)
-                    if (!m) {
-                        console.log("error on loading plugin " + name)
-                        _v.checked = false
-                        $(_v).parent().addClass("splugins_load_error")
-                        return false
-                    }
-                    if ( _v.checked ){
-                        m.load()
-                    }else{
-                        m.unload()
-                    }
-                })
-        }
+        seajs.use( "/js/app/plugins/" + name
+            , function (m) {
+                var _v = document.getElementById("SPluginModule_"+name)
+                if (!m) {
+                    console.log("error on loading plugin " + name)
+                    _v.checked = false
+                    $(_v).parent().addClass("splugins_load_error")
+                    return false
+                }
+                if ( _v.checked ){
+                    m.load()
+                    $(_v).parent().addClass("splugins_load_on")
+                }else{
+                    $(_v).parent().removeClass("splugins_load_on")
+                    m.unload()
+                }
+            })
     }
     _v = new view("<h1>my name is <%- name%></h1>")
 
@@ -38,11 +40,17 @@ define(function(require,exports, module){
     Controller.prototype.render = function () {
         return this._v.compose(this)
     }
+
+    var plugin_tpl = _.template("<li>"
+            +"<input id=\"SPluginModule_<%= name%>\" "
+            +" type=\"checkbox\" _name=\"<%=name%>\"/><label><%=name%>"
+            +" </lable></li>"
+        )
+    //FIXME replace with event dispatching
     Controller.prototype.addPlugin = function (name) {
         seajs.log("add plugin:"+name)
         var script="seajs.require(\"" + name +"\")()"
-        var element = $("<li><label><input id=\"pluginModule" + name + "\" type=\"checkbox\"/>"+name+"</label></li>")
-        element.change(load_plugins(name))
+        var element = $(plugin_tpl({"name":name})).attr( {"id":"SPlugin_"+name, "_name":name})
         $("#plugins .list").append(element)
     }
 
@@ -64,6 +72,14 @@ define(function(require,exports, module){
         _.each(pm.getList(), _.bind(function(i) {
                 this.addPlugin(i)
             }, this))
+
+        $("#plugins .list").on("change"
+            , function(e) {
+                seajs.log(e)
+                var name = $(e.target).attr('_name')
+                load_plugins(name)
+            }
+        )
 
         $("#plugins .submit").click(
             _.bind(function(e){
