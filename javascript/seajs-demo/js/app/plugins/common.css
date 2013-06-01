@@ -1,0 +1,7 @@
+.splugins_load_error:after{
+    color:red;
+    content: " (loading error)";
+}
+.splugins_simple_title{
+    color:red
+}
