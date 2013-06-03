@@ -8,12 +8,20 @@
 <script
     src="js/sea-modules/seajs/seajs/2.0.0/sea-debug.js"
     data-config="./js/config"
-    data-main="./js/main">
+    _data-main="./js/main"
+    id="seajsnode">
     // tip: if . or .. in data-*  , resolve to root dir
     // for seajs , base path is /js/seajs/sea-modules/ (alias as ~seajs)
     // data-config="js/config", will be resolved into ~seajs/js/config
     // /js/config, is domain.com/js/config
     // ../js/config, is domain.com/../js/config
+</script>   
+<script>   
+    seajs.use(['$', "./js/main"], function ($, main) {
+        $(document).ready(function(){
+            main.init();
+        })
+    })
 </script>   
 
 <div id="plugins">
