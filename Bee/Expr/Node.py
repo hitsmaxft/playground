@@ -4,8 +4,6 @@
 import Wrapper
 
 class Node(Wrapper):
-    _path=None
-
 
     def __init__(self, path):
         Wrapper.__init__(path)

@@ -3,17 +3,17 @@
 
 __author__ = 'hitsmaxft'
 
-import Request
-from Node import Node
-import Wrapper
-
+#from .. import Request
+#from Node import Node
 
 import ply.lex as lex
+import ply.yacc as yacc
 
-from Expr import Node
 
 tokens_op = ['EQ', 'GT', 'LT', 'GE', 'LE']
+
 tokens = ['NODE', "NUMBER", "STRING", "PY_OP", "EXPR", 'COMMENT', 'LIST']
+
 tokens.extend(tokens_op)
 
 
@@ -26,8 +26,6 @@ t_GE = r'>='
 t_LT = r'<'
 t_LE = r'<='
 
-
-
 t_ignore = ' \t'
 
 t_ignore_COMMENT = r'\;.*'
@@ -37,7 +35,8 @@ def t_error (t):
 
 def t_NODE(t):
     r'^[#]?[a-z.*]+'
-    t.value = Node(t.value)
+    #t.value = Node(t.value)
+    t.value = 3
     return t
 
 def t_NUMBER(t):
@@ -69,8 +68,25 @@ def t_LIST(t):
     t.value = [ tk.value for tk in list(l) ]
     return t
 
-def compile(expr):
-    return Node.parse(expr)
+def p_expression_cmp(p):
+    'expression : NODE EQ NUMBER'
+    p[0] = p[1] == p[3]
+
+def _eval(l):
+    l,op,r  = list(l)
+    vleft = 12
+    op = "__{}__".format(op.type.lower())
+    vright = r.value
+
+    op_method = getattr(vleft, op)
+    return op_method(vright)
+
+def runStringOnce(rule):
+    l = lex.lex()
+    l.input(rule)
+    parser = yacc.yacc()
+    return parser.parse(rule)
+    return _eval(l)
 
 def run(rules, file_path):
     '''
@@ -88,4 +104,6 @@ def run(rules, file_path):
         l = lex.lex()
         l.input(s)
         #print(dir(list(l)[0]))
-
+if __name__ == '__main__':
+    rule="data.*navigator.type = 3"
+    print(runStringOnce(rule))

@@ -5,6 +5,10 @@ __author__ = 'hitsmaxft'
 
 class Wrapper(object):
 
+    def __init__(self, v=None):
+        self._v = v
+        self._isNode = False
+
     def __len__(self):
         """len()"""
         pass
@@ -32,7 +36,3 @@ class Wrapper(object):
         """!="""
         pass
 
-    def __init__(self, v=None):
-        self._v = v
-        self._isNode = False
-        pass
