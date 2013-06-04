@@ -1,12 +1,12 @@
 #!/bin/bash/python
 # -*- coding: utf-8 -*-
 
-import Wrapper
+from . import Wrapper
 
-class Node(Wrapper):
+class Node(object):
 
     def __init__(self, path):
-        Wrapper.__init__(path)
+
         self._path = path
         #self._v = query(path)
 
