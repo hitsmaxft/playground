@@ -19,7 +19,7 @@ class Eval(object):
         pass
 
     def runStringOnce(self, rule, obj=None):
-        node_data = None
+        node_data = self.symbols
 
         def find_node_value(path):
             v = node_data
@@ -31,11 +31,8 @@ class Eval(object):
                     return None
             return v
 
-
         tokens_op = ['REQ', 'EQ', 'GT', 'LT', 'GE', 'LE', 'IN', 'JSON']
-
         tokens = ["REGEX", 'NODE', "NUMBER", "STRING"]
-
         tokens.extend(tokens_op)
 
         #t_OP = r'\s*[+-\/=><]\s*'
@@ -48,24 +45,18 @@ class Eval(object):
         t_LE = r'<='
         t_IN = r'@'
 
-
         t_ignore = ' \t'
 
         t_ignore_COMMENT = r'\;.*'
-
         def t_error(t):
             print(t)
 
         def t_JSON(t):
             r'&JSON:.*'
-
-            print("json")
             node_data = t.value[6:].strip()
 
         def t_NODE(t):
-            r'^[#]?[A-Za-z][A-Za-z0-9.*]+'
-            #t.value = Node(t.value)
-
+            r'^\#?[A-Za-z][A-Za-z0-9.*]+'
             count_len = False
             if t.value[0] == "#":
                 count_len = 1
@@ -139,25 +130,23 @@ class Eval(object):
             'expression : REGEX'
             t[0] = re.compile(t[1])
 
-        def p_expression_eq(p):
-            'expression : expression EQ expression'
-            p[0] = p[1] == p[3]
-
-        def p_expression_ge(p):
-            'expression : expression GE expression'
-            p[0] = p[1] >= p[3]
-
-        def p_expression_gt(p):
-            'expression : expression GT expression'
-            p[0] = p[1] > p[3]
-
-        def p_expression_lt(p):
-            'expression : expression LT expression'
-            p[0] = p[1] < p[3]
-
-        def p_expression_le(p):
-            'expression : expression LE expression'
-            p[0] = p[1] <= p[3]
+        def p_expression_bool_op(p):
+            '''expression : expression EQ expression
+                            | expression GE expression
+                            | expression GT expression
+                            | expression LE expression
+                            | expression LT expression
+            '''
+            if p[2] == "=":
+                p[0] = str(p[1]) == str(p[3])
+            elif p[2] == '>=' :
+                p[0] = p[1] == p[3]
+            elif p[2] == '>' :
+                p[0] = p[1] > p[3]
+            elif p[2] == '<=' :
+                p[0] = p[1] <= p[3]
+            elif p[2] == '<' :
+                p[0] = p[1] < p[3]
 
         def p_expression_in(p):
             'expression : expression IN expression'
@@ -184,8 +173,8 @@ class Eval(object):
             return op_method(vright)
         l = lex.lex()
         l.input(rule)
-        print(list(l))
-        parser = yacc.yacc(write_tables=0)
+        #print(list(l))
+        parser = yacc.yacc()
         return parser.parse(rule)
 
     def runTest(rules, file_path):

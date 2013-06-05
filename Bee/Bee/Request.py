@@ -23,6 +23,7 @@ class Request(object):
         )
 
     def __doReq(self, url):
+        return None
         return '{"data": {"nav": {"type": 3}}}'
 
     def get(self, key):
@@ -32,8 +33,12 @@ class Request(object):
 
     def _parse(self, url="", content=""):
         """
-        >>> r = Request() ; r.get('http://123.com/a.php')
+        >>> r = Request() ; r.get('http://s.taobao.com/search?q=t&debug=true&test=1')
         {u'data': {u'nav': {u'type': 3}}}
         """
-        self.cache[self.url] = json.loads(content)
+        import urllib,re
+        html_body = urllib.urlopen(url).read().decode("gb18030")
+        reg_exp = re.compile("<test>(.*)</test>")
+        content = reg_exp.search(html_body)
+        self.cache[self.url] = json.loads(content.groups()[0])
         return self.cache[self.url]
