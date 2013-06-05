@@ -12,13 +12,17 @@ from Bee.Expr import Node
 
 class Eval(object):
 
-
     def __init__(self, symbols):
         self.symbols = symbols
+
+    def runScript(self, rule, obj=None):
+        pass
+
     def runStringOnce(self, rule, obj=None):
+        node_data = None
 
         def find_node_value(path):
-            v = obj
+            v = node_data
             for n in path:
                 if v == None:
                     return None
@@ -27,7 +31,8 @@ class Eval(object):
                     return None
             return v
 
-        tokens_op = ['REQ', 'EQ', 'GT', 'LT', 'GE', 'LE', 'IN']
+
+        tokens_op = ['REQ', 'EQ', 'GT', 'LT', 'GE', 'LE', 'IN', 'JSON']
 
         tokens = ["REGEX", 'NODE', "NUMBER", "STRING"]
 
@@ -43,12 +48,19 @@ class Eval(object):
         t_LE = r'<='
         t_IN = r'@'
 
+
         t_ignore = ' \t'
 
         t_ignore_COMMENT = r'\;.*'
 
         def t_error(t):
             print(t)
+
+        def t_JSON(t):
+            r'&JSON:.*'
+
+            print("json")
+            node_data = t.value[6:].strip()
 
         def t_NODE(t):
             r'^[#]?[A-Za-z][A-Za-z0-9.*]+'
@@ -106,6 +118,10 @@ class Eval(object):
             return t
 
         def p_error(t): print("Syntax error at '%s'" % t.value)
+
+        def p_expression_json(t):
+            'expression : JSON'
+            return
 
         def p_expression_node(t):
             'expression : NODE'
@@ -168,10 +184,11 @@ class Eval(object):
             return op_method(vright)
         l = lex.lex()
         l.input(rule)
+        print(list(l))
         parser = yacc.yacc(write_tables=0)
         return parser.parse(rule)
 
-    def run(rules, file_path):
+    def runTest(rules, file_path):
         '''
         >>>run()
         '''
