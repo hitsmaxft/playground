@@ -1,24 +1,31 @@
-import web
-from Bee.Expr.Eval import Eval
+from web import application,input
+from Bee.Expr import Eval
+from Bee.Request import TestRequest
 from json import loads,dumps
 from urllib import urlopen
 
-urls = (
+routers = (
     '/', 'index'
 )
+
+req = TestRequest()
+
 class index:
     def GET(self):
         return "<form method=\"post\"><input name=\"content\"/><input type=\"submit\" /></form>"
     def POST(self):
-        input = web.input()
-        content = input.get('content')
-        content = input.get('url')
-        print(content)
-        text = urlopen("./tests/sample.json").read()
-        self._data = loads(text)
-        e = Eval(self._data)
-        return dumps({"result": e.runStringOnce(content)})
+        """
+        get parameters from post body
+
+        :return:
+        """
+        storage = input()
+        rules = storage.get('rules')
+        url = storage.get('url')
+        data = req.get(url)
+        result = Eval(data).runStringOnce(rules)
+        return dumps({"result": result})
 
 if __name__ == "__main__":
-    app = web.application(urls, globals())
+    app = application(routers, globals())
     app.run()
