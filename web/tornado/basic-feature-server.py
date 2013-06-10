@@ -1,7 +1,9 @@
 #!/usr/bin/env python2
 import tornado.httpserver
+import tornado.httpclient
 import tornado.ioloop
 import tornado.web
+import time
 import tornado.template
 
 simple_tpl='''
@@ -20,7 +22,7 @@ simple_tpl='''
     <div class="row">
 
 
-    <h1>{{title}}</h1>
+    <h1>{{title}} {{now}}</h1>
     <div class="hero-unit">
         <h2>Tornado Hello World</h2>
     </div>
@@ -52,8 +54,10 @@ window.setTimeout(function(){
 </body>
 </html>'''
 
+
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
+        now=time.time()
         tpl = tornado.template.Template(simple_tpl)
         self.write(tpl.generate(
             title='simple hello wrold'
@@ -62,7 +66,15 @@ class MainHandler(tornado.web.RequestHandler):
                 'title': 'hello'
                 , 'content' : [ 'yep', 'opps', 'blahblah' ]
                 }
+            , now = now
             ))
+        def simple_handler(response):
+            if response.error:
+                print('error')
+            else:
+                print("reponse from " + str(now))
+        client = tornado.httpclient.AsyncHTTPClient()
+        client.fetch("http://www.google.com", simple_handler)
 
 application = tornado.web.Application([
     (r"/", MainHandler),
