@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#-*-coding:utf-8-*-  
+#-*-coding:utf-8-*-
 
 #from httplib2 import Http
 #from urllib.parse import urlencode
