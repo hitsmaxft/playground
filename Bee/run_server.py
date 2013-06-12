@@ -1,6 +1,6 @@
 from web import application,input
 from Bee.Expr import Eval
-from Bee.Request import TestRequest
+from Bee.Request import SimpleRequest
 from json import loads,dumps
 from urllib import urlopen
 
@@ -8,7 +8,7 @@ routers = (
     '/', 'index'
 )
 
-req = TestRequest()
+req = SimpleRequest()
 
 class index:
     def GET(self):

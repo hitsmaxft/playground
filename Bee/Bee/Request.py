@@ -3,7 +3,7 @@
 import json
 import urllib,re
 
-class TestRequest(object):
+class SimpleRequest(object):
     """
     parse remote data from page with json data
     simple for cache and retry , expire data  with time and use times
@@ -19,7 +19,7 @@ class TestRequest(object):
         pass
 
     def makeReq(self, url):
-        return self._parse(
+        return self.parse(
             self.__doReq(url)
         )
 
@@ -28,20 +28,24 @@ class TestRequest(object):
         make request for url, return data
 
         """
-
         #TODO error handling for retry
-        html_body = urllib.urlopen(url).read().decode("gb18030")
+        html_body = urllib.urlopen(url).read()
         return html_body
 
     def get(self, key=None, default=None):
-        result = self.cache[key] \
-            if key in self.cache else \
-            self.makeReq(key)
+        useCache=True if key else False
+
+        if useCache:
+            result = self.cache[key] \
+                if key in self.cache else \
+                self.makeReq(key)
+        else:
+             result=self.makeReq(key)
 
         if result == None:
             return default
 
-    def _parse(self, html_content=""):
+    def parse(self, html_content="", enc="gb18030"):
         """
         parse json object from html content with regex expr
 
@@ -49,10 +53,10 @@ class TestRequest(object):
         >>> r = TestRequest() ; r.get('http://s.taobao.com/search?q=t&debug=true&test=1')
         """
         reg_exp = re.compile("<test>(.*)</test>")
-        content = reg_exp.search(html_content)
+        content = reg_exp.search(html_content.decode(enc))
 
         if None == content:
             return None
 
-        self.cache[self.url] = json.loads(content.groups()[0])
-        return self.cache[self.url]
+        return json.loads(content.groups()[0])
+

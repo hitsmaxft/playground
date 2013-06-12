@@ -8,8 +8,8 @@ def wrap_rule(rule, data):
 
 class BasicScriptTestCase(unittest.TestCase):
     def setUp(self):
-        from Bee.Request import TestRequest
-        #r = TestRequest()
+        from Bee.Request import SimpleRequest
+        #r = SimpleRequest()
         #content = r.get('http://s.taobao.com/search?q=t&debug=true&test=1')
         content = open("./tests/sample.json").read()
         self._json = content
