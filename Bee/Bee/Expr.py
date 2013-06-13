@@ -135,10 +135,12 @@ class Query(object):
 
 class Eval(object):
 
-    def __init__(self, debug=0):
+    def __init__(self, data=None, debug=0, node_prefix=None):
+        self.data=data
         self.debug = debug
-        self.lex = lex.lex(debug=self.debug, module=BeeLang)
-        self.parser = yacc.yacc(debug=1, module=BeeLang)
+        self.prefix = node_prefix if None != node_prefix else ""
+        self.lex = lex.lex(debug=debug, module=BeeLang)
+        self.parser = yacc.yacc(debug=debug, module=BeeLang)
 
     def runScript(self, rule, obj=None):
         pass
@@ -152,10 +154,22 @@ class Eval(object):
         op_method = getattr(vleft, op)
         return op_method(vright)
 
-    def runStringOnce(self, rule, obj=None):
+    def compress(self, rules="", data=None):
+        if None == data:
+            data = self.data
+        if type(data) != str:
+            import json
+            data = json.dumps(data)
+        script = rules
+        if len(self.prefix)>0:
+            script=u"~PREFIX:{}\n\n{}".format(self.prefix, script)
 
-        self.lex.input(rule)
-        return self.parser.parse(rule, debug=self.debug)
+        return u"~JSON:{}\n\n{}".format(data.encode("utf-8"), script)
+
+    def runStringOnce(self, rules, data=None):
+        script=self.compress(rules, data)
+        self.lex.input(script)
+        return self.parser.parse(rules, debug=self.debug)
 
     def runTest(rules, file_path):
         '''

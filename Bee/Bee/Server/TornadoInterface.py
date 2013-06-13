@@ -1,8 +1,11 @@
 #!/usr/bin/env python2
-import tornado.web
 from tornado.httputil import HTTPHeaders
 import tornado.template
 import tornado.httpclient as httpclient
+from tornado import gen
+
+from tornado.web import asynchronous
+
 
 from Bee.Expr import Eval
 from Bee.Request import SimpleRequest
@@ -29,7 +32,7 @@ class MainHandler(tornado.web.RequestHandler):
         for k,v in param:
             self.add_header(k, v)
 
-    @tornado.web.asynchronous
+    @asynchronous
     def get(self):
         """
         for test only
@@ -42,19 +45,43 @@ class MainHandler(tornado.web.RequestHandler):
     def async_get(self, url):
         http_client.fetch(url, self.handle_request)
 
+    def async_request(self, url):
+        http_client.fetch(url, self.handle_request)
+
+    def handle_get(self, response):
+        pass
+
     def handle_request(self, response):
         """
         request handler
         """
+        rules = self.get_argument("rules")
         if response.error:
             self.write("Error:", response.error)
         else:
-            data = req.parse(response.body, 'utf-8')
-            self.write( data )
+            data = req.parse(response.body, 'gb18030')
+            result = Eval(data).runStringOnce(rules)
+            self.write( result )
             #self.write(response.body)
         self.finish()
 
-    def post(self, url, rules):
-        data = req.get(url)
-        result = Eval(data).runStringOnce(rules)
-        return dumps({"result": result})
+
+    @asynchronous
+    @gen.engine
+    def post(self, url=None, rules=None):
+        url = "{}&test=true&debug=true".format(self.get_argument("url"))
+        rules = self.get_argument("rules")
+        node_prefix = self.get_argument("node_prefix")
+        http_client.fetch(url,
+                          callback=(yield gen.Callback("key")))
+        response = yield gen.Wait("key")
+        if response.error:
+            self.write("Error:", response.error)
+        else:
+            if None != response.body:
+                data = req.parse(response.body, 'gb18030')
+                result = Eval(data, node_prefix=node_prefix, debug=0).runStringOnce(rules)
+                self.write(dumps(result))
+            else:
+                self.write( "ok" )
+        self.finish()

@@ -2,13 +2,14 @@
 # -*- coding: utf-8 -*-
 import re
 import json
+debugMode=False
 
 #data register
-symbol_table = {'nodes':None}
+symbol_table = {'JSON':None}
 
 #help for resolving node value
 def find_node_value(path):
-    v = symbol_table.get('nodes')
+    v = symbol_table.get('JSON')
     for n in path:
         if v == None:
             return None
@@ -18,7 +19,7 @@ def find_node_value(path):
     return v
 
 #token list for lexer
-tokens = ['REQ', 'EQ', 'GT', 'LT', 'GE', 'LE', 'IN',"REGEX", 'NODE', "NUMBER", "STRING", 'JSON', 'SEP']
+tokens = ['REQ', 'EQ', 'GT', 'LT', 'GE', 'LE', 'IN',"REGEX", 'NODE', "NUMBER", "STRING", 'SYM', 'SEP']
 
 precedence = (
     ('nonassoc','REQ', 'EQ', 'GT', 'LT', 'GE', 'LE', 'IN'),
@@ -38,10 +39,7 @@ t_ignore = ' \t'
 t_ignore_COMMENT = r'\;.*'
 t_SEP = r'[;]'
 
-def t_JSON(t):
-    r'^~JSON:.*'
-    symbol_table['nodes'] = json.loads(t.value[6:])
-    return None
+
 
 def t_error(t):
     #print(t)
@@ -65,6 +63,19 @@ def t_NODE(t):
     else:
         t.value = node_value
     return t
+
+def t_SYM(t):
+    r"""~[A-Z]+\:.+"""
+    pattern=re.compile(r'^~(?P<name>[A-Z]+):(?P<value>.*)')
+    result = pattern.search(t.value)
+    if not result.group("name") or not result.group("value"):
+        return None
+    name = result.group("name")
+    value = result.group("value")
+    print("name : %s" % name)
+    symbol_table[name] = json.loads(value)
+    return None
+
 
 def t_NUMBER(t):
     r'(\d+)'
@@ -107,7 +118,7 @@ def p_statement(t):
 
 def p_statement_recursive(t):
     """
-    statement : expression statement
+    statement : expression SEP statement
     """
     t[0] = t[1] and t[2]
 

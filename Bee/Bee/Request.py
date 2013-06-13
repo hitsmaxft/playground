@@ -50,13 +50,12 @@ class SimpleRequest(object):
         parse json object from html content with regex expr
 
         doctests
-        >>> r = TestRequest() ; r.get('http://s.taobao.com/search?q=t&debug=true&test=1')
+        >>> r = TestRequest() ; r.get('http://s.taobao.com/search?q=t&debug=true&test=true')
         """
+
         reg_exp = re.compile("<test>(.*)</test>")
         content = reg_exp.search(html_content.decode(enc))
-
         if None == content:
             return None
-
         return json.loads(content.groups()[0])
 
