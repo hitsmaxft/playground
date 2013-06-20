@@ -5,9 +5,9 @@ _tabversion = '3.2'
 
 _lr_method = 'LALR'
 
-_lr_signature = '\xbc\xea\x17\x93\xe1\x1b\xd1\x9a\xcd#\xa6\x97\xb7\tk\xdd'
+_lr_signature = '\xcb\x9c\xe1\xf8\x7f\x87c\x04\xce\xd8\xe6L\x94\xb6\x92k'
     
-_lr_action_items = {'NODE':([0,8,9,10,11,12,13,15,],[2,2,2,2,2,2,2,2,]),'REGEX':([0,8,9,10,11,12,13,14,15,],[1,1,1,1,1,1,1,22,1,]),'LE':([1,2,3,5,7,],[-6,-3,-5,-4,13,]),'GE':([1,2,3,5,7,],[-6,-3,-5,-4,11,]),'STRING':([0,8,9,10,11,12,13,15,],[3,3,3,3,3,3,3,3,]),'SEP':([1,2,3,4,5,17,18,19,20,21,22,23,],[-6,-3,-5,8,-4,-9,-12,-8,-11,-10,-13,-7,]),'REQ':([1,2,3,5,7,],[-6,-3,-5,-4,14,]),'NUMBER':([0,8,9,10,11,12,13,15,],[5,5,5,5,5,5,5,5,]),'LT':([1,2,3,5,7,],[-6,-3,-5,-4,12,]),'GT':([1,2,3,5,7,],[-6,-3,-5,-4,9,]),'IN':([1,2,3,5,7,],[-6,-3,-5,-4,10,]),'EQ':([1,2,3,5,7,],[-6,-3,-5,-4,15,]),'$end':([1,2,3,4,5,6,16,17,18,19,20,21,22,23,],[-6,-3,-5,-1,-4,0,-2,-9,-12,-8,-11,-10,-13,-7,]),}
+_lr_action_items = {'NODE':([0,8,9,10,11,12,13,15,],[2,2,2,2,2,2,2,2,]),'REGEX':([0,8,9,10,11,12,13,14,15,],[1,1,1,1,1,1,1,22,1,]),'LE':([1,2,3,5,7,],[-6,-3,-5,-4,13,]),'GE':([1,2,3,5,7,],[-6,-3,-5,-4,11,]),'STRING':([0,8,9,10,11,12,13,15,],[3,3,3,3,3,3,3,3,]),'REQ':([1,2,3,5,7,],[-6,-3,-5,-4,14,]),'NUMBER':([0,8,9,10,11,12,13,15,],[5,5,5,5,5,5,5,5,]),'LT':([1,2,3,5,7,],[-6,-3,-5,-4,12,]),'GT':([1,2,3,5,7,],[-6,-3,-5,-4,9,]),'IN':([1,2,3,5,7,],[-6,-3,-5,-4,10,]),';':([1,2,3,4,5,17,18,19,20,21,22,23,],[-6,-3,-5,8,-4,-9,-12,-8,-11,-10,-13,-7,]),'EQ':([1,2,3,5,7,],[-6,-3,-5,-4,15,]),'$end':([1,2,3,4,5,6,16,17,18,19,20,21,22,23,],[-6,-3,-5,-1,-4,0,-2,-9,-12,-8,-11,-10,-13,-7,]),}
 
 _lr_action = { }
 for _k, _v in _lr_action_items.items():
@@ -26,17 +26,17 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> statement","S'",1,None,None,None),
-  ('statement -> expression','statement',1,'p_statement','/home/qixiang/Personal/playground/Bee/Bee/BeeLang.py',115),
-  ('statement -> expression SEP statement','statement',3,'p_statement_recursive','/home/qixiang/Personal/playground/Bee/Bee/BeeLang.py',121),
-  ('factor -> NODE','factor',1,'p_factor_value','/home/qixiang/Personal/playground/Bee/Bee/BeeLang.py',127),
-  ('factor -> NUMBER','factor',1,'p_factor_value','/home/qixiang/Personal/playground/Bee/Bee/BeeLang.py',128),
-  ('factor -> STRING','factor',1,'p_factor_value','/home/qixiang/Personal/playground/Bee/Bee/BeeLang.py',129),
-  ('factor -> REGEX','factor',1,'p_factor_regex','/home/qixiang/Personal/playground/Bee/Bee/BeeLang.py',135),
-  ('expression -> factor EQ factor','expression',3,'p_factor_miexd','/home/qixiang/Personal/playground/Bee/Bee/BeeLang.py',140),
-  ('expression -> factor GE factor','expression',3,'p_factor_miexd','/home/qixiang/Personal/playground/Bee/Bee/BeeLang.py',141),
-  ('expression -> factor GT factor','expression',3,'p_factor_miexd','/home/qixiang/Personal/playground/Bee/Bee/BeeLang.py',142),
-  ('expression -> factor LE factor','expression',3,'p_factor_miexd','/home/qixiang/Personal/playground/Bee/Bee/BeeLang.py',143),
-  ('expression -> factor LT factor','expression',3,'p_factor_miexd','/home/qixiang/Personal/playground/Bee/Bee/BeeLang.py',144),
-  ('expression -> factor IN factor','expression',3,'p_factor_in','/home/qixiang/Personal/playground/Bee/Bee/BeeLang.py',158),
-  ('expression -> factor REQ REGEX','expression',3,'p_factor_reg_in','/home/qixiang/Personal/playground/Bee/Bee/BeeLang.py',169),
+  ('statement -> expression','statement',1,'p_statement','/home/hitsmaxft/local/playground/Bee/Bee/BeeLang.py',121),
+  ('statement -> expression ; statement','statement',3,'p_statement_recursive','/home/hitsmaxft/local/playground/Bee/Bee/BeeLang.py',127),
+  ('factor -> NODE','factor',1,'p_factor_value','/home/hitsmaxft/local/playground/Bee/Bee/BeeLang.py',133),
+  ('factor -> NUMBER','factor',1,'p_factor_value','/home/hitsmaxft/local/playground/Bee/Bee/BeeLang.py',134),
+  ('factor -> STRING','factor',1,'p_factor_value','/home/hitsmaxft/local/playground/Bee/Bee/BeeLang.py',135),
+  ('factor -> REGEX','factor',1,'p_factor_regex','/home/hitsmaxft/local/playground/Bee/Bee/BeeLang.py',141),
+  ('expression -> factor EQ factor','expression',3,'p_factor_miexd','/home/hitsmaxft/local/playground/Bee/Bee/BeeLang.py',146),
+  ('expression -> factor GE factor','expression',3,'p_factor_miexd','/home/hitsmaxft/local/playground/Bee/Bee/BeeLang.py',147),
+  ('expression -> factor GT factor','expression',3,'p_factor_miexd','/home/hitsmaxft/local/playground/Bee/Bee/BeeLang.py',148),
+  ('expression -> factor LE factor','expression',3,'p_factor_miexd','/home/hitsmaxft/local/playground/Bee/Bee/BeeLang.py',149),
+  ('expression -> factor LT factor','expression',3,'p_factor_miexd','/home/hitsmaxft/local/playground/Bee/Bee/BeeLang.py',150),
+  ('expression -> factor IN factor','expression',3,'p_factor_in','/home/hitsmaxft/local/playground/Bee/Bee/BeeLang.py',164),
+  ('expression -> factor REQ REGEX','expression',3,'p_factor_reg_in','/home/hitsmaxft/local/playground/Bee/Bee/BeeLang.py',175),
 ]

@@ -10,7 +10,14 @@ symbol_table = {'JSON':None}
 #help for resolving node value
 def find_node_value(path):
     v = symbol_table.get('JSON')
-    for n in path:
+    pp = symbol_table.get('PREFIX', '')
+    if len(pp)>0:
+        pp = pp.split(".", 0)
+    else:
+        pp=[]
+    pp.extend(path)
+
+    for n in pp:
         if v == None:
             return None
         v = v.get(n, None)
@@ -19,11 +26,13 @@ def find_node_value(path):
     return v
 
 #token list for lexer
-tokens = ['REQ', 'EQ', 'GT', 'LT', 'GE', 'LE', 'IN',"REGEX", 'NODE', "NUMBER", "STRING", 'SYM', 'SEP']
+tokens = ['REQ', 'EQ', 'GT', 'LT', 'GE', 'LE', 'IN',"REGEX", 'NODE', "NUMBER", "STRING", 'SYM']
 
 precedence = (
     ('nonassoc','REQ', 'EQ', 'GT', 'LT', 'GE', 'LE', 'IN'),
 )
+
+literals = [';']
 
 
 ## rule for tokens
@@ -37,7 +46,6 @@ t_LE = r'<='
 t_IN = r'@'
 t_ignore = ' \t'
 t_ignore_COMMENT = r'\;.*'
-t_SEP = r'[;]'
 
 
 
@@ -64,16 +72,20 @@ def t_NODE(t):
         t.value = node_value
     return t
 
+
 def t_SYM(t):
-    r"""~[A-Z]+\:.+"""
+    r"\~[A-Za-z]+\:.+"
     pattern=re.compile(r'^~(?P<name>[A-Z]+):(?P<value>.*)')
     result = pattern.search(t.value)
     if not result.group("name") or not result.group("value"):
         return None
     name = result.group("name")
     value = result.group("value")
-    print("name : %s" % name)
-    symbol_table[name] = json.loads(value)
+    try:
+        symbol_table[name] = json.loads(value)
+    except:
+        symbol_table[name] = value
+
     return None
 
 
@@ -103,6 +115,7 @@ def p_error(t):
     else:
         value = 'undefined'
 
+    line_no = 'unknown'
     if hasattr(t, 'lexer'):
         line_on  = t.lexer.lineno
     else:
@@ -118,7 +131,7 @@ def p_statement(t):
 
 def p_statement_recursive(t):
     """
-    statement : expression SEP statement
+    statement : expression ';' statement
     """
     t[0] = t[1] and t[2]
 
@@ -167,6 +180,4 @@ def p_factor_in(p):
 
 def p_factor_reg_in(p):
     'expression : factor REQ REGEX'
-    p["123"]=22
-    print(dir(p["123"]))
     p[0] = re.match(p[3], p[1]) != None

@@ -13,7 +13,7 @@ class BasicScriptTestCase(unittest.TestCase):
         content = open("./tests/sample.json").read()
         self._json = content
         self._data = loads(content)
-        self.e = Eval(self._data, debug=0, node_prefix="data")
+        self.e = Eval(self._data, debug=0)
 
     def getData(self):
         pass
@@ -21,19 +21,23 @@ class BasicScriptTestCase(unittest.TestCase):
     def test_json_global(self):
         self.assertTrue(
             self.e.runStringOnce(
-                    "data.view.navigation.type = 3\n#data.view.navigation.prop.20000 = 2",
+                    "data.view.navigation.type = 3",
                     self._data
             )
         )
 
     def test_node_value2(self):
         self.assertFalse(self.e.runStringOnce(
-                "data.view.navigation.type = 0"
+                "data.view.navigation.type = 0",
+                self._data
             ))
 
-    def test_node_len(self):
+    def test_complex_path(self):
         self.assertTrue(
-            self.e.runStringOnce('entry.recommendbottom.DATA.*widgetName = "recommendBottom"')
+            self.e.runStringOnce(
+                'entry.recommendbottom.DATA.*widgetName = "recommendBottom"',
+                self._data
+            ),
         )
 
 
@@ -43,7 +47,7 @@ class BasicScriptTestCase(unittest.TestCase):
     def test_double_eval(self):
         self.assertTrue(
             self.e.runStringOnce(
-                    "data.view.navigation.type = 3\n#data.view.navigation.prop.20000 = 2"
+                    "data.view.navigation.type = 3 ; #data.view.navigation.prop.20000 = 2"
             )
         )
         self.assertTrue(self.e.runStringOnce('data.view.navigation.type = 3'))

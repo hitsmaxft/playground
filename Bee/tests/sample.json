@@ -1,1 +1,18 @@
-{"data":{"view":{"navigation":{"type":3,"prop":{"20000":[4992,28811]}}}},"logs":{"default":["simplelog","I'mfine"]}}
+{
+    "data":{
+        "view":{
+            "navigation":{
+                "type":3,
+                "prop":{"20000":[4992,28811]}}}
+    },
+    "entry":{
+        "recommendbottom":{
+            "DATA":{
+                "*widgetName":"recommendBottom"
+            }
+        }
+    },
+    "logs":{
+        "default":["simplelog","I'mfine"]
+    }
+}

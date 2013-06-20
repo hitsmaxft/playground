@@ -7,6 +7,9 @@ import ply.yacc as yacc
 __author__ = 'hitsmaxft'
 
 class Wrapper(object):
+    """
+    值包装, 用于特殊类型运算
+    """
 
     def __init__(self, v=None):
         self._v = v
@@ -40,6 +43,10 @@ class Wrapper(object):
         pass
 
 class Node(object):
+    """
+    节点类型, 暂是不需要
+    在语法解析阶段做好节点取值
+    """
 
     def __init__(self, path):
 
@@ -134,8 +141,14 @@ class Query(object):
         }
 
 class Eval(object):
+    """
+    脚本主要运行部分
+    """
 
     def __init__(self, data=None, debug=0, node_prefix=None):
+        """
+        初始化数据以及上下文
+        """
         self.data=data
         self.debug = debug
         self.prefix = node_prefix if None != node_prefix else ""
@@ -155,6 +168,9 @@ class Eval(object):
         return op_method(vright)
 
     def compress(self, rules="", data=None):
+        """
+        包装好脚本和数据, 注入全局变量
+        """
         if None == data:
             data = self.data
         if type(data) != str:
@@ -162,14 +178,16 @@ class Eval(object):
             data = json.dumps(data)
         script = rules
         if len(self.prefix)>0:
-            script=u"~PREFIX:{}\n\n{}".format(self.prefix, script)
-
-        return u"~JSON:{}\n\n{}".format(data.encode("utf-8"), script)
+            script=u"~PREFIX:{}\n{}".format(self.prefix, script)
+        return u"~JSON:{}\n{}".format(data.encode("utf-8"), script)
 
     def runStringOnce(self, rules, data=None):
+        """
+        执行脚本
+        """
         script=self.compress(rules, data)
-        self.lex.input(script)
-        return self.parser.parse(rules, debug=self.debug)
+        #self.lex.input(script)
+        return self.parser.parse(script, debug=self.debug)
 
     def runTest(rules, file_path):
         '''
