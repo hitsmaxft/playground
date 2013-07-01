@@ -29,7 +29,7 @@ class SimpleRequest(object):
 
         """
         #TODO error handling for retry
-        html_body = urllib.urlopen(url).read()
+        html_body = urllib.urlopen("%s&debug=true&test=1" % url ).read()
         return html_body
 
     def get(self, key=None, default=None):
@@ -42,8 +42,7 @@ class SimpleRequest(object):
         else:
              result=self.makeReq(key)
 
-        if result == None:
-            return default
+        return result
 
     def parse(self, html_content="", enc="gb18030"):
         """
@@ -52,10 +51,11 @@ class SimpleRequest(object):
         doctests
         >>> r = TestRequest() ; r.get('http://s.taobao.com/search?q=t&debug=true&test=true')
         """
-
         reg_exp = re.compile("<test>(.*)</test>")
-        content = reg_exp.search(html_content.decode(enc))
+        content = reg_exp.search(html_content)
         if None == content:
             return None
-        return json.loads(content.groups()[0])
+
+        ref_data = content.groups()[0].decode(enc)
+        return json.loads(ref_data)
 
