@@ -12,7 +12,7 @@ def find_node_value(path):
     v = symbol_table.get('JSON')
     pp = symbol_table.get('PREFIX', '')
     if len(pp)>0:
-        pp = pp.split(".", 0)
+        pp = pp.split(".")
     else:
         pp=[]
     pp.extend(path)

@@ -47,10 +47,10 @@ class Node(object):
     节点类型, 暂是不需要
     在语法解析阶段做好节点取值
     """
-
     def __init__(self, path):
 
         self._path = path
+        self._v = None
         #self._v = query(path)
 
     def parse(expr):
@@ -167,10 +167,12 @@ class Eval(object):
         op_method = getattr(vleft, op)
         return op_method(vright)
 
-    def compress(self, rules="", data=None):
+    def compress(self, rules="", data=None, prefix=None):
         """
         包装好脚本和数据, 注入全局变量
         """
+
+        _prefix = None
         if None == data:
             data = self.data
         if type(data) != str:
@@ -178,14 +180,19 @@ class Eval(object):
             data = json.dumps(data)
         script = rules
         if len(self.prefix)>0:
-            script=u"~PREFIX:{}\n{}".format(self.prefix, script)
+            _prefix = self.prefix
+        if len(prefix)>0:
+            _prefix = prefix
+
+        if _prefix:
+            script=u"~PREFIX:{}\n{}".format(_prefix, script)
         return u"~JSON:{}\n{}".format(data.encode("utf-8"), script)
 
-    def runStringOnce(self, rules, data=None):
+    def runStringOnce(self, rules, data=None, prefix=None):
         """
         执行脚本
         """
-        script=self.compress(rules, data)
+        script=self.compress(rules, data, prefix)
         #self.lex.input(script)
         return self.parser.parse(script, debug=self.debug)
 
