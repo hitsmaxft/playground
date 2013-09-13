@@ -7,3 +7,7 @@ import (
 func init() {
     fmt.Println("hello")
 }
+
+func test() {
+    fmt.Println("hello test")
+}
