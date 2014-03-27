@@ -10,3 +10,4 @@ tags
 *.out
 *.log
 sea-modules
+node_modules

@@ -1,0 +1,12 @@
+{
+    "name": "hitsmaxft/example-fastcgi-client",
+    "authors": [
+        {
+            "name": "hitsmaxft",
+            "email": "mfthits@gmail.com"
+        }
+    ],
+    "require": {
+        "ebernhardson/fastcgi":"dev-master"
+    }
+}

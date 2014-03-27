@@ -1,0 +1,69 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+    ],
+    "hash": "2d3e46e29ade534ecd81d66f47456706",
+    "packages": [
+        {
+            "name": "ebernhardson/fastcgi",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ebernhardson/fastcgi.git",
+                "reference": "775f8d112573acd29c1f9e681b5a5a4ce43e0979"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ebernhardson/fastcgi/zipball/775f8d112573acd29c1f9e681b5a5a4ce43e0979",
+                "reference": "775f8d112573acd29c1f9e681b5a5a4ce43e0979",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "EBernhardson\\FastCGI": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Erik Bernhardson",
+                    "email": "bernhardsonerik@gmail.com"
+                },
+                {
+                    "name": "Pierrick Charron",
+                    "email": "pierrick@webstart.fr"
+                },
+                {
+                    "name": "Daniel Aharon",
+                    "email": "dan@danielaharon.com"
+                }
+            ],
+            "description": "FastCGI Client implementation for PHP",
+            "homepage": "http://www.github.com/ebernhardson/fastcgi/",
+            "keywords": [
+                "fastcgi",
+                "fpm",
+                "php-fpm"
+            ],
+            "time": "2013-02-02 04:27:58"
+        }
+    ],
+    "packages-dev": [
+
+    ],
+    "aliases": [
+
+    ],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "ebernhardson/fastcgi": 20
+    },
+    "platform": [
+
+    ],
+    "platform-dev": [
+
+    ]
+}
